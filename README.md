@@ -1,4 +1,4 @@
-# gbdt_leaf_spark
+# gbdt_leaf_spark(gbdt+lr)
 
     
     object GbdtLeafTest {
