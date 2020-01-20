@@ -2,8 +2,8 @@
 
     
     object GbdtLeafTest {
-      val modelPath = "rank-model-train/target/gbdtlr_path"
-      val mleapModelPath = "/Users/fangwendong/work/javapath/recommend_sort/gbdt-leaf-transform/target/test.zip"
+      val modelPath = ""
+      val mleapModelPath = ""
     
       def loadModel(spark: SparkSession, df: DataFrame): PipelineModel = {
     
