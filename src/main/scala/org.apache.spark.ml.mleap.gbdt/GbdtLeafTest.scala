@@ -16,8 +16,7 @@ class GbdtLeafTest {
 }
 
 object GbdtLeafTest {
-  val modelPath = "rank-model-train/target/gbdtlr_path"
-  val mleapModelPath = "/Users/fangwendong/work/javapath/recommend_sort/gbdt-leaf-transform/target/test.zip"
+  val modelPath = "target/gbdtlr_path"
 
   def loadModel(spark: SparkSession, df: DataFrame): PipelineModel = {
 
@@ -25,16 +24,6 @@ object GbdtLeafTest {
 
     sameModel.transform(df).show(false)
     sameModel
-  }
-
-  def mleapBundle(spark: SparkSession, rawSamples: DataFrame) {
-
-    val onlinePipeline = loadModel(spark, rawSamples)
-    val predictDF = onlinePipeline.transform(rawSamples)
-    val sbcRf = SparkBundleContext().withDataset(predictDF)
-    for (bf <- managed(BundleFile(s"jar:file:${mleapModelPath}"))) {
-      onlinePipeline.writeBundle.save(bf)(sbcRf).get
-    }
   }
 
   def saveModel(spark: SparkSession, df: DataFrame): Unit = {
@@ -160,14 +149,11 @@ object GbdtLeafTest {
       .option("header", "true")
       .option("inferSchema", "true")
       .option("delimiter", "\t")
-      .csv("rank-model-train/data/ssp_test.csv") //.select("ad__cr_id", "label", "gender")
+      .csv("src/main/scala/org.apache.spark.ml.mleap.gbdt/data.csv") //.select("ad__cr_id", "label", "gender")
     spark.sparkContext.setLogLevel("WARN")
-    //    loadModel(spark, df)
-    //    saveModel(spark, df)
-    //    testGbdtLR(spark, df)
-
-    mleapBundle(spark,df)
+    saveModel(spark, df)
+    loadModel(spark, df)
+    testGbdtLR(spark, df)
   }
 
 }
-
